@@ -1,6 +1,8 @@
+#pragma once
 #include <string>
 #include <ctime>
 #include <unistd.h>
+#include <fmt/core.h>
 namespace klog {
 namespace detail {
 inline std::string TimeString(time_t tm) {
@@ -12,7 +14,7 @@ inline std::string TimeString(time_t tm) {
 }
 // 日志文件格式：日期-时间-PID.log
 inline std::string GetLogPathName(const char *log_path, time_t log_time) {
-  return log_path + ('/' + TimeString(log_time)) + '-' + std::to_string(getpid()) + ".log";
+  return fmt::format("{}/{}-{}.log", log_path, TimeString(log_time), getpid());
 }
 } // namespace detail
 } // namespace klog

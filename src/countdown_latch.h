@@ -1,3 +1,4 @@
+#pragma once
 #include "macros.h"
 #include <condition_variable>
 #include <mutex>

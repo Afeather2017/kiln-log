@@ -18,4 +18,3 @@ FetchContent_Declare(
 
 find_package(fmt)
 add_subdirectory(src)
-

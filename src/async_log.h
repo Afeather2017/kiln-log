@@ -1,19 +1,30 @@
+#pragma once
 #include <atomic>
 #include <cassert>
 #include <condition_variable>
+#include <fmt/core.h>
 #include <memory>
 #include <mutex>
 #include <thread>
 #include <vector>
+#include "context.h"
 #include "macros.h"
 #include "countdown_latch.h"
 namespace klog {
 namespace detail {
-struct Context;
 using SharedContext = std::shared_ptr<Context>;
 struct Message {
 
-  SharedContext context;
+  SharedContext context_;
+  std::string Format() const {
+    std::string ret = fmt::format("{}:{}.{}:{} {}",
+                                  context_->tid,
+                                  context_->short_filename,
+                                  context_->line,
+                                  context_->func_name,
+                                  context_->text.c_str());
+    return ret;
+  }
 };
 
 struct Buffer {

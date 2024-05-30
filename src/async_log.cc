@@ -63,14 +63,8 @@ void AsyncLog::WorkerFunc() {
 
         for (auto &buffer : buffer_to_write) {
           for (auto &message : buffer) {
-            static thread_local char buf[1024];
-            int len = snprintf(buf, 1024, "%d:%s.%d:%s %s",
-                               message.context->tid,
-                               message.context->short_filename,
-                               message.context->line,
-                               message.context->func_name,
-                               message.context->text.c_str());
-            rl.Append(buf, len);
+            auto str = message.Format();
+            rl.Append(str.c_str(), str.size());
           }
         }
 
