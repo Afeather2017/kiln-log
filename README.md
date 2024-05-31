@@ -2,6 +2,7 @@
 
 Here we have:
 
-[ ] Formated log, with date time, thread info, etc.
-[ ] Log to file with rolling and log to console.
-[ ] Multi-level log, could set it on the fly.
+[x] Formated log, with date time, thread info, etc.
+[x] Log to file with rolling and log to console.
+[x] Multi-level log
+[ ] Could set output which log level on the fly.
