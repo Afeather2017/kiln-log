@@ -2,6 +2,7 @@
 #include "context.h"
 #include <chrono>
 #include <mutex>
+#include <thread>
 #include "file.h"
 namespace klog {
 namespace detail {
@@ -10,11 +11,12 @@ AsyncLog::AsyncLog(const char *log_path,                 // NOLINT
                    time_t flush_interval):               // NOLINT
                       log_path_{log_path},               // NOLINT
                       roll_size_{roll_size},             // NOLINT
-                      flush_interval_{flush_interval},   // NOLINT
-                      countdown_{1},                     // NOLINT
-                      worker_{[this]{ WorkerFunc(); }} {
+                      flush_interval_{flush_interval}    // NOLINT
+{
+  auto future = wait_for_worker_.get_future();
+  worker_ = std::thread{[this]{WorkerFunc();}};
+  future.get();
   // 等待线程启动
-  countdown_.Wait();
 }
 
 void AsyncLog::WorkerFunc() {
@@ -32,7 +34,7 @@ void AsyncLog::WorkerFunc() {
         if (buffers_.empty()) {
           // 仅仅在线程启动的时候调用一次，
           // 用于解决构造函数构造完成了而线程未准备好的问题
-          std::call_once(call_once_, [this](){ countdown_.CountDown(); });
+          std::call_once(call_once_, [this](){ wait_for_worker_.set_value(); });
           
           // 等待flush_interval_秒后会结束，
           // 或者被由于current_buf_满了被唤醒

@@ -3,13 +3,13 @@
 #include <cassert>
 #include <condition_variable>
 #include <fmt/core.h>
+#include <future>
 #include <memory>
 #include <mutex>
 #include <thread>
 #include <vector>
 #include "context.h"
 #include "macros.h"
-#include "countdown_latch.h"
 namespace klog {
 namespace detail {
 using SharedContext = std::shared_ptr<Context>;
@@ -102,7 +102,7 @@ class AsyncLog {
 
   std::mutex              latch_;
   std::condition_variable cv_;
-  CountDownLatch          countdown_;
+  std::promise<void>      wait_for_worker_;
   std::atomic_bool        done_{false};
 
   std::once_flag          call_once_;
