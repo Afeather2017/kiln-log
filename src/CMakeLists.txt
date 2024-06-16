@@ -15,8 +15,6 @@ add_library(kilnlog
             ${PROJECT_SOURCE_DIR}/src/file.cc)
 set_target_properties(kilnlog PROPERTIES LINKER_LANGUAGE CXX)
 
-install(TARGETS kilnlog
-        DESTINATION ${PROJECT_SOURCE_DIR}/src/include)
-
-install(FILES ${PROJECT_SOURCE_DIR}/src/kiln-log.h
-        DESTINATION ${PROJECT_SOURCE_DIR}/src/include)
+target_sources(kilnlog
+               PUBLIC FILE_SET kilnlogheader TYPE HEADERS
+               FILES ${PROJECT_SOURCE_DIR}/src/kiln-log.h)
