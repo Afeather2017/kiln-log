@@ -31,9 +31,6 @@ add_executable(log_test
 target_link_libraries(log_test GTest::gtest_main fmt::fmt)
 gtest_discover_tests(log_test)
 
-add_executable(log_ex
-               log_ex.cc
-               ${PROJECT_SOURCE_DIR}/src/async_log.cc
-               ${PROJECT_SOURCE_DIR}/src/file.cc
-)
-target_link_libraries(log_ex GTest::gtest_main fmt::fmt)
+add_executable(log_ex log_ex.cc)
+target_link_libraries(log_ex GTest::gtest_main fmt::fmt kilnlog)
+

@@ -1,11 +1,4 @@
 cmake_minimum_required(VERSION 3.14)
-project(kiln-log)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # GoogleTest requires at least C++14
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -17,4 +10,13 @@ FetchContent_Declare(
 )
 
 find_package(fmt)
-add_subdirectory(src)
+add_library(kilnlog
+            ${PROJECT_SOURCE_DIR}/src/async_log.cc
+            ${PROJECT_SOURCE_DIR}/src/file.cc)
+set_target_properties(kilnlog PROPERTIES LINKER_LANGUAGE CXX)
+
+install(TARGETS kilnlog
+        DESTINATION ${PROJECT_SOURCE_DIR}/src/include)
+
+install(FILES ${PROJECT_SOURCE_DIR}/src/kiln-log.h
+        DESTINATION ${PROJECT_SOURCE_DIR}/src/include)

@@ -29,3 +29,4 @@ include(cmake/CPM.cmake)
 #CPMAddPackage("gh:fmtlib/fmt#7.1.3")
 
 add_subdirectory(${PROJECT_SOURCE_DIR}/test)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src)
